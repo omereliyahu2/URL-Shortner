@@ -6,5 +6,5 @@ Base = declarative_base()
 
 class URLMapping(Base):
     __tablename__ = "url_mappings"
-    short_url = Column(String, primary_key=True, index=True)
-    original_url = Column(String, index=True)
+    short_url = Column(String(256), primary_key=True, index=True)
+    original_url = Column(String(256), index=True)

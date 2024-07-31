@@ -1,6 +1,8 @@
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import RedirectResponse
+
 from domain.db_manager_interface import DBManagerInterface
 from domain.models import URLRequest
-from infrastructure.db_manager_concrete import DBManager
 from infrastructure.models import URLMapping
 from web_api.main import injector
 import shortuuid
@@ -9,7 +11,14 @@ from fastapi import FastAPI, HTTPException, Request
 web_domain = "omer.com"
 
 app = FastAPI()
-db: DBManagerInterface = injector.get(DBManager)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:8001"],  # Allow your frontend origin
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+db: DBManagerInterface = injector.get(DBManagerInterface)
 
 
 @app.post("/shorten/")
@@ -25,7 +34,7 @@ def create_short_url(url_request: URLRequest, fastapi_request: Request):
 
 @app.get("/{short_url}")
 def redirect_to_url(short_url: str):
-    url_mapping = db.query(URLMapping).filter(URLMapping.short_url == short_url).first()
+    url_mapping = db.filter_query(URLMapping, URLMapping.short_url, short_url)
     if url_mapping is None:
         raise HTTPException(status_code=404, detail="URL not found")
-    return {"url": url_mapping.original_url}
+    return RedirectResponse(url=url_mapping.original_url)

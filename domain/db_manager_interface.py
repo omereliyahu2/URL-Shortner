@@ -16,5 +16,5 @@ class DBManagerInterface(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def query(self, obj: Any) -> Any:
+    def filter_query(self, model: Any, value_to_compare: Any, comparison_target) -> Any:
         raise NotImplementedError
