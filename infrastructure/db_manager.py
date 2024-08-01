@@ -14,7 +14,7 @@ class DBManager(DBManagerInterface):
     @inject
     def __init__(self, secrets_manager: SecretsManagerInterface):
         secret = secrets_manager.get_secret("url_database-1")
-        database_url = f"{secret['engine']}://{secret['usename']}:{secret['password']}@{secret['host']}:{secret['port']}/{secret['dbname']}"
+        database_url = f"{secret['engine']}://{secret['username']}:{secret['password']}@{secret['host']}:{secret['port']}/{secret['dbname']}"
         engine = create_engine(database_url, connect_args={"connect_timeout": 20})
         session_local = sessionmaker(autocommit=False, autoflush=False, bind=engine)
         Base.metadata.create_all(bind=engine)
