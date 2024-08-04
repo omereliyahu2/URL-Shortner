@@ -2,7 +2,7 @@ async function shortenUrl() {
     const urlInput = document.getElementById('urlInput').value;
     console.log(`URL to shorten: ${urlInput}`); // Debugging line
 
-    const response = await fetch('http://127.0.0.1:8080/shorten/', {
+    const response = await fetch('https://url-short-06c850713632.herokuapp.com/shorten/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
