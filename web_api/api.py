@@ -9,7 +9,7 @@ from fastapi import FastAPI, Request
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:8001"],
+    allow_origins=["http://localhost:8001", "https://omereliyahu2.github.io"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
