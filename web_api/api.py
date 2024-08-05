@@ -1,3 +1,5 @@
+from urllib.parse import urlparse
+
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
 
@@ -25,4 +27,8 @@ def create_short_url(url_request: URLRequest, fastapi_request: Request):
 @app.get("/{short_url}")
 def redirect_to_url(short_url: str):
     original_url = url_handler.get_original_url(short_url=short_url)
+    parsed_url = urlparse(original_url)
+    if not parsed_url.scheme:
+        # Default to http if no scheme is provided
+        original_url = "http://" + original_url
     return RedirectResponse(url=original_url)
